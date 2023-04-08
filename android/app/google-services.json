@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "522777359209",
+    "project_id": "lectury-e7f12",
+    "storage_bucket": "lectury-e7f12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522777359209:android:00519bc5c807a77d0c03f8",
+        "android_client_info": {
+          "package_name": "ionic.app.lectury"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522777359209-68ppg16fj3r4l93n29io4ai205h5ta3g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_U_yfV5hjisHktj1JjJOMxD40exaivqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522777359209-68ppg16fj3r4l93n29io4ai205h5ta3g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

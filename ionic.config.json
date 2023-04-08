@@ -1,0 +1,7 @@
+{
+  "name": "ionic-app-lectury",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
