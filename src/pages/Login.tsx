@@ -145,17 +145,13 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
             value={pass}
           />
         </IonItem>
-        <IonItem lines="none">
-          <IonLabel>Remember me</IonLabel>
-          <IonCheckbox defaultChecked={true} slot="start" />
-        </IonItem>
         <IonButton onClick={() => login()} className="ion-margin-top" type="submit" expand="block">
           Login
         </IonButton>
-        <IonButton onClick={() => setIsForgotPasswordModalOpen(true)} className="ion-margin-top" type="submit" expand="block">
+        <IonButton onClick={() => setIsForgotPasswordModalOpen(true)} className="ion-margin-top" type="submit" expand="block" color="warning">
           Forgot Password?
         </IonButton>
-        <IonButton routerLink="/home" expand="block" className="ion-margin-top">
+        <IonButton routerLink="/home" expand="block" className="ion-margin-top" color="danger">
           Back
         </IonButton>
         <IonModal

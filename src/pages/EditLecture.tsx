@@ -492,6 +492,7 @@ const EditLecture: React.FC<RouteComponentProps> = ({ history }) => {
                     expand="block"
                     disabled={courseDate.length === 0}
                     onClick={addDate}
+                    color="success"
                   >
                     <IonIcon icon={add}></IonIcon>
                   </IonButton>

@@ -404,6 +404,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
                         <IonButton 
                           expand="block"
                           onClick={() => removeDate(m)}
+                          color="danger"
                         >
                           <IonIcon icon={trash}></IonIcon>
                         </IonButton>
@@ -422,6 +423,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
                   <IonButton
                     expand="block"
                     onClick={goBack}
+                    color="danger"
                   >
                     <IonIcon icon={arrowBack}></IonIcon>
                   </IonButton>
@@ -433,6 +435,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
                     expand="block"
                     disabled={study.length === 0 || name === '' || year === ''}
                     onClick={addLecture}
+                    color="success"
                   >
                     <IonIcon icon={add}></IonIcon>
                   </IonButton>
@@ -474,7 +477,6 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
                 value={courseDate}
               >
               </IonDatetime>
-              <IonLabel>{pickedDates}</IonLabel>
               </IonCol>
             </IonItem>
             <IonItem>
@@ -537,6 +539,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
                     expand="block"
                     disabled={courseDate.length === 0}
                     onClick={addDate}
+                    color="success"
                   >
                     <IonIcon icon={add}></IonIcon>
                   </IonButton>

@@ -269,11 +269,14 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Create Account</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <div className="ion-padding">
-          <IonText color="muted">
-            <h2>Create Account</h2>
-          </IonText>
+
           <IonItem>
             <IonLabel position="floating">Full name</IonLabel>
             <IonInput 
@@ -397,7 +400,7 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
           <IonButton expand="block" type="submit" className="ion-margin-top" onClick={() => register()}>
             Register
           </IonButton>
-          <IonButton routerLink="/home" expand="block" className="ion-margin-top">
+          <IonButton routerLink="/home" expand="block" className="ion-margin-top" color="danger">
             Back
           </IonButton>
         </div>

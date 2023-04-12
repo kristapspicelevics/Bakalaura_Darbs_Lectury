@@ -9,7 +9,7 @@ import { firebaseApp } from '../App';
 import { getFirestore, query, collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { User } from '../models/User';
 import { Course } from '../models/Course';
-import { add, calendar, closeOutline, documentOutline, exitOutline, timeOutline } from 'ionicons/icons';
+import { add, calendar, closeOutline, documentOutline, exitOutline, timeOutline, trash } from 'ionicons/icons';
 import { types } from './Register';
 import { Studies } from '../models/Studies';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic';
@@ -49,7 +49,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
   const [pickedStartDate, setPickedStartDate] = useState<string>('');
   const [pickedEndDate, setPickedEndDate] = useState<string>('');
   const [courseDate, setCourseDate] = useState<string[]>([]);
-  let dateTimes : string[] = [];
+  const [dateTimes, setDateTimes] = useState<string[]>([]);
   const [pickedDates, setPickedDates] = useState<string[]>([]);
 
   useIonViewWillEnter(() => {
@@ -114,7 +114,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
     courseDate.forEach(element => {
       console.log(element + " " + timeStart)
       console.log(element + " " + timeEnd)
-      dateTimes.push(element + ";" + timeStart+";" + timeEnd)
+      dateTimes.push(element.split("T")[0] + ";" + timeStart+";" + timeEnd)
       //console.log(Date.parse(pickedDate))
     })
     console.log("Date:")
@@ -211,11 +211,20 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
       });
       
     });
-    setCourses(courses.filter((obj, index) => {
-      return index === courses.findIndex(o => obj.id === o.id);
+    setCourses(courses.sort((a, b) => {
+      const nameA = a.nearestDate!;
+      const nameB = b.nearestDate!;
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+    
+      // names must be equal
+      return 0;
     }))
     console.log(courses.filter(obj => obj.dates.find(d => Date.parse(d.split(";")[0] + " " + d.split(";")[2]) > nowDate)))
-    console.log(courses.filter(obj => obj.teacher === 5))
   };
 
   const getStudies = async () => {
@@ -394,7 +403,17 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
     setIsEditLectureModalOpen(false)
   }
 
-  
+  const removeDate = (d: string) => {
+    console.log(d)
+    // let index = dateTimes.indexOf(d);
+    // console.log(index)
+    // if (index !== -1) {
+    //   dateTimes.splice(index, 1);
+    //   setDateTimes(dateTimes.filter(f => f !== d))
+    // }
+    setDateTimes(dateTimes.filter(f => f !== d))
+    console.log(dateTimes)
+  }
 
   const editLecture = (m: Course) => {
     history.push('/editlecture');
@@ -422,6 +441,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
         <IonContent className="ion-padding">
           <IonLabel>Email: {users[0]?.email}<br/></IonLabel>
           <IonLabel>Name: {users[0]?.name}<br/></IonLabel>
+          <IonLabel>Role: {users[0]?.type}<br/></IonLabel>
           { users[0]?.type === types[0] &&
             <>
               <IonLabel>Study: {users[0]?.study}<br/></IonLabel>
@@ -458,7 +478,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                           
                         </IonRow>
                         
-                          {(m.nearestDate !== "" && m.nearestDate !== undefined) &&
+                          {(m.nearestDate !== undefined) &&
                             <>
                             <IonRow>
                               <IonCol size="12">
@@ -493,9 +513,10 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                 >
                 <IonHeader>
                   <IonToolbar>
-                      <IonButtons slot="end">
-                        <IonButton onClick={() => setIsEditLectureModalOpen(false)}><IonIcon icon={closeOutline}></IonIcon></IonButton>
-                      </IonButtons>
+                    <IonTitle>{m.name}</IonTitle>
+                    <IonButtons slot="end">
+                      <IonButton onClick={() => setIsEditLectureModalOpen(false)}><IonIcon icon={closeOutline}></IonIcon></IonButton>
+                    </IonButtons>
                   </IonToolbar>
                 </IonHeader>
                 <IonContent>
@@ -581,8 +602,34 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                   </IonItem>
                   <IonItem>
                     <IonList>
-                      {pickedDates?.map((m: string) => (
-                        <IonLabel>{m}</IonLabel>
+                      {dateTimes?.map((m: string) => (
+                        <IonGrid>
+                          <IonRow>
+                            <IonCol size="9">
+                              <IonItem>
+                                <IonRow>
+                                  <IonCol size="12">
+                                    
+                                    <IonLabel><IonIcon icon={calendar}></IonIcon> {m.split(";")[0]}<br/></IonLabel>
+                                  </IonCol>
+                                  <IonCol size="12">
+                                    
+                                    <IonLabel><IonIcon icon={timeOutline}></IonIcon> {m.split(";")[1]} - {m.split(";")[2]}<br/></IonLabel>
+                                  </IonCol>
+                                </IonRow>
+                              </IonItem>
+                            </IonCol>
+                            <IonCol size="3">
+                              <IonButton 
+                                expand="block"
+                                onClick={() => removeDate(m)}
+                                color="danger"
+                              >
+                                <IonIcon icon={trash}></IonIcon>
+                              </IonButton>
+                            </IonCol>
+                          </IonRow>
+                        </IonGrid>
                       ))}
                     </IonList> 
                   </IonItem> 
@@ -598,7 +645,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                             disabled={study.length === 0 || name === '' || year === ''}
                             onClick={() => updateLecture(currCourse!)}
                           >
-                            {currCourse?.id}
+                            <IonIcon icon={add}></IonIcon>
                           </IonButton>
                         </IonCol>
                       </IonRow>
@@ -640,7 +687,6 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                         value={courseDate}
                       >
                       </IonDatetime>
-                      <IonLabel>{courseDate}</IonLabel>
                       </IonCol>
                     </IonItem>
                     <IonItem>
@@ -649,7 +695,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                         <IonDatetime
                           className='ion-justify-content-center'
                           //multiple={true}
-                          
+                          inputMode='none'
                           ref={time}
                           presentation="time"
                           onIonChange={(ev:CustomEvent<DatetimeChangeEventDetail>) => {
@@ -673,6 +719,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                         <IonDatetime
                           className='ion-justify-content-center'
                           //multiple={true}
+                          inputMode='none'
                           ref={endTime}
                           presentation="time"
                           onIonChange={(ev:CustomEvent<DatetimeChangeEventDetail>) => {
@@ -703,6 +750,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                             expand="block"
                             disabled={courseDate.length === 0}
                             onClick={addDate}
+                            color="success"
                           >
                             <IonIcon icon={add}></IonIcon>
                           </IonButton>
