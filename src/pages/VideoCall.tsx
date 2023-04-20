@@ -5,14 +5,16 @@ import { Jitsi } from 'capacitor-jitsi-meet';
 import { FirebaseAuthentication } from '@awesome-cordova-plugins/firebase-authentication';
 import { RouteComponentProps } from 'react-router';
 import { useRef, useState } from 'react';
-import { firebaseApp } from '../App';
+import { firebaseApp, languages } from '../App';
 import { getFirestore, query, collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { User } from '../models/User';
 import { Course } from '../models/Course';
 import { add, calendar, closeOutline, documentOutline, exitOutline, timeOutline, trash } from 'ionicons/icons';
-import { types } from './Register';
 import { Studies } from '../models/Studies';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic';
+import i18next from '../i18n';
+import { useTranslation } from 'react-i18next';
+import { Localization } from '../models/Localization';
 
 const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
 
@@ -32,7 +34,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
   const [showAlert1, setShowAlert1] = useState(false);
   const [textAlert1, settextAlert1] = useState("");
   let nowDate = Date.now()
-
+  
   let years = [1,2,3,4,5]
   const [name, setName] = useState<string>('');
   const [study, setStudy] = useState<string[]>([]);
@@ -51,6 +53,22 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
   const [courseDate, setCourseDate] = useState<string[]>([]);
   const [dateTimes, setDateTimes] = useState<string[]>([]);
   const [pickedDates, setPickedDates] = useState<string[]>([]);
+
+  const [language, setLanguage] = useState(i18next.language);
+  const [isLangListModalOpen, setIsLangListModalOpen] = useState(false)
+  const [currLanguage, setcurrLanguage] = useState<Localization>();
+  const { t, i18n } = useTranslation();
+  let types = [t("student"), t("teacher")]
+  function changeLang(lng: string){
+    i18n.changeLanguage(lng);
+    setLanguage(lng)
+    setIsLangListModalOpen(false)
+  };
+
+  function setCurrLang(lng: string){
+    i18n.changeLanguage(lng);
+    setLanguage(lng)
+  };
 
   useIonViewWillEnter(() => {
     nowDate = Date.now()
@@ -144,9 +162,9 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
       console.log(jsonData);
       console.log(email);
       console.log(jsonData.email);
-      console.log(jsonData.type === types[0]);
+      console.log(jsonData.type === 0);
       if (email === jsonData.email.toString()){
-        if (jsonData.type === types[0]){
+        if (jsonData.type === 0){
           users.push({
             id: jsonData.id,
             name: jsonData.name,
@@ -166,8 +184,8 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
       } 
     });
     console.log("User courses")
-    console.log(users[0].type === types[1])
-    if (users[0].type === types[0]) {
+    console.log(users[0].type === 1)
+    if (users[0].type === 0) {
       setCourses(courses.filter(obj => obj.year === users[0].year));
       console.log("Student")
     } else {
@@ -427,7 +445,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
             <IonGrid>
             <IonRow>
               <IonCol size="8">
-              <IonTitle>Profile</IonTitle>
+              <IonTitle>{t("profile")}</IonTitle>
               </IonCol>
               <IonCol size="4">
                 <IonMenuButton onClick={() => logOut()}>
@@ -439,15 +457,25 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          <IonLabel>Email: {users[0]?.email}<br/></IonLabel>
-          <IonLabel>Name: {users[0]?.name}<br/></IonLabel>
-          <IonLabel>Role: {users[0]?.type}<br/></IonLabel>
-          { users[0]?.type === types[0] &&
+          <IonLabel>{t("email")}: {users[0]?.email}<br/></IonLabel>
+          <IonLabel>{t("fullname")}: {users[0]?.name}<br/></IonLabel>
+          <IonLabel>{t("role")}: {types[users[0]?.type]}<br/></IonLabel>
+          { users[0]?.type === 0 &&
             <>
-              <IonLabel>Study: {users[0]?.study}<br/></IonLabel>
-              <IonLabel>Year: {users[0]?.year}<br/></IonLabel>
+              <IonLabel>{t("study")}: {users[0]?.study}<br/></IonLabel>
+              <IonLabel>{t("year")}: {users[0]?.year}<br/></IonLabel>
             </>
           }
+          <IonItem                     
+            id="languages"                    
+            button={true} 
+            onClick={() => setIsLangListModalOpen(true)}
+          >
+            <IonLabel>
+              {t("language")}
+            </IonLabel>
+            
+          </IonItem>
         </IonContent>
       </IonMenu>
       <IonPage id="main-content">
@@ -456,7 +484,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
             <IonButtons slot="start">
               <IonMenuButton></IonMenuButton>
             </IonButtons>
-            <IonTitle>Videocall</IonTitle>
+            <IonTitle>{t("lecture")}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -521,7 +549,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                 </IonHeader>
                 <IonContent>
                   <IonItem>
-                    <IonLabel position="floating">Lecture name</IonLabel>
+                    <IonLabel position="floating">{t("lecture_name")}</IonLabel>
                     <IonInput 
                       type="text" 
                       ref={nameInputRef}
@@ -537,7 +565,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                       id="study-input"
                       name="study-input"
                       ref={studyRef}
-                      placeholder="Study"
+                      placeholder={t("study") as string}
                       disabled={name === ''}
                       value={study}
                       onIonChange={
@@ -580,7 +608,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                       id="course-input"
                       name="course-input"
                       ref={yearRef}
-                      placeholder="Year"
+                      placeholder={t("year") as string}
                       disabled={study.length === 0}
                       value={year}
                       onIonChange={
@@ -595,10 +623,10 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                     </IonSelect>
                   </IonItem>
                   <IonItem button onClick={() => openDateModal(m)} className="ion-margin-top" type="submit">
-                    <IonLabel>Pick date</IonLabel>
+                    <IonLabel>{t("pick_dates")}</IonLabel>
                   </IonItem>
                   <IonItem button onClick={() => reset()} className="ion-margin-top" type="submit">
-                    <IonLabel>Clear</IonLabel>
+                    <IonLabel>{t("clear")}</IonLabel>
                   </IonItem>
                   <IonItem>
                     <IonList>
@@ -691,7 +719,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                     </IonItem>
                     <IonItem>
                       <IonCol size="6">
-                        <IonLabel>Start time:</IonLabel>
+                        <IonLabel>{t("start_time")}:</IonLabel>
                         <IonDatetime
                           className='ion-justify-content-center'
                           //multiple={true}
@@ -715,7 +743,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                       
                       </IonCol>
                       <IonCol size="6">
-                        <IonLabel>End time:</IonLabel>
+                        <IonLabel>{t("end_time")}:</IonLabel>
                         <IonDatetime
                           className='ion-justify-content-center'
                           //multiple={true}
@@ -764,7 +792,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
             ))}
           </IonList>  
         </IonContent>
-        { users[0]?.type === types[1] &&
+        { users[0]?.type === 1 &&
           <IonFooter>
             <IonRow>
               <IonCol size="9">
@@ -780,7 +808,63 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
             </IonRow>
           </IonFooter>
         }
+          <IonModal
+            id="lang-modal"
+            isOpen={
+              isLangListModalOpen
+            }
+            onWillPresent={() => setCurrLang(i18n.language)}
+          >
+            <IonHeader>
+              <IonToolbar>
+                <IonTitle>{t("language")}</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton id="modal-lang-close" onClick={() => setIsLangListModalOpen(false)}><IonIcon icon={ closeOutline }></IonIcon></IonButton>
+                </IonButtons>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
+            { (languages !== null
+            && 
 
+                <IonList id="lang-list">
+                  {
+                    (currLanguage
+                      &&
+                      <IonItem                     
+                        key={currLanguage?.locale} 
+                        button={false} 
+                        color='dark'
+                        className='opacity'
+                      >
+                        <IonLabel>
+                          <h5>{currLanguage?.languageName} ({currLanguage?.locale})</h5>
+                        </IonLabel>
+                      </IonItem>
+                    )
+                  }
+
+                  {languages?.map(
+                    lng => (
+                      lng !== currLanguage &&
+                      <IonItem
+                        id={lng.locale}                     
+                        key={lng.locale} 
+                        button={true} 
+                        onClick={() => changeLang(lng.locale)}
+                      >
+                        <IonLabel>
+                          <h5>{lng.languageName} ({lng.locale})</h5>
+                        </IonLabel>
+                      </IonItem>
+                    )
+                  )
+                }
+                </IonList>
+              )
+            }
+          </IonContent>
+        </IonModal>
         <IonAlert        
           isOpen={showAlert1}
           onDidDismiss={() => dismissAlert()}

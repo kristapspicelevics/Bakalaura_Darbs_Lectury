@@ -11,13 +11,15 @@ import { useRef, useState } from 'react';
 import { Studies } from '../models/Studies';
 import { User } from '../models/User';
 import { firebaseApp } from '../App';
+import { initReactI18next, useTranslation  } from 'react-i18next';
 
-export let types = ["Student","Teacher"]
 export let years = [1,2,3,4,5]
 
 const Register: React.FC<RouteComponentProps> = ({ history }) => {
 
   const [users, setUsers] = useState<User[]>([]);
+  const { t, i18n } = useTranslation();
+  let types = [t("student"), t("teacher")]
 
   useIonViewWillEnter(() => {
     setName('');
@@ -30,7 +32,8 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
     getUsers();
     setStudy('');
     setCourse('');
-    setType('');
+    setTypeString('');
+    setType(0);
   })
 
   
@@ -80,7 +83,8 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [passConfirm, setPassConfirm] = useState<string>('');
   const [study, setStudy] = useState<string>('');
   const [course, setCourse] = useState<string>('');
-  const [type, setType] = useState<string>('');
+  const [type, setType] = useState<number>(0);
+  const [typeString, setTypeString] = useState<string>('');
 
   const [studies, setStudies] = useState<Studies[]>([]);
   const [curYears, setCurYears] = useState<number[]>([]);
@@ -240,7 +244,7 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
       let user: User 
       FirebaseAuthentication.createUserWithEmailAndPassword(email, pass)
       const db = getFirestore(firebaseApp);
-      if (type === types[0]){
+      if (type === 0){
         user = {
           id: lastId.id + 1,
           name: name, 
@@ -271,14 +275,14 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Create Account</IonTitle>
+          <IonTitle>{t("register")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <div className="ion-padding">
 
           <IonItem>
-            <IonLabel position="floating">Full name</IonLabel>
+            <IonLabel position="floating">{t("fullname")}</IonLabel>
             <IonInput 
               type="text" 
               ref={nameInputRef}
@@ -287,7 +291,7 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
               ></IonInput>
           </IonItem>
           <IonItem>
-            <IonLabel position="floating">Email</IonLabel>
+            <IonLabel position="floating">{t("email")}</IonLabel>
             <IonInput 
               type="email" 
               ref={emailInputRef}
@@ -296,7 +300,7 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
               ></IonInput>
           </IonItem>
           <IonItem>
-            <IonLabel position="floating">Password</IonLabel>
+            <IonLabel position="floating">{t("password")}</IonLabel>
             <IonInput 
               type="password" 
               ref={passInputRef}
@@ -305,7 +309,7 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
             />
           </IonItem>
           <IonItem>
-            <IonLabel position="floating">Confirm password</IonLabel>
+            <IonLabel position="floating">{t("confirm_password")}</IonLabel>
             <IonInput 
               type="password"
               ref={passConfirmInputRef}
@@ -321,11 +325,20 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
               id="course-input"
               name="course-input"
               ref={typeRef}
-              placeholder="Type"
-              value={type}
+              placeholder={t("role") as string}
+              value={typeString}
               onIonChange={
               (ev:CustomEvent<SelectChangeEventDetail>) => {
-                setType(ev.detail.value)
+                if (ev.detail.value === types[0]){
+                  setType(0)
+                  setTypeString(types[0])
+                } else {
+                  setType(1)
+                  setTypeString(types[1])
+                  setStudy('');
+                  setCourse('');
+                }
+                
               }
 
             }
@@ -343,9 +356,9 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
             id="study-input"
             name="study-input"
             ref={studyRef}
-            placeholder="Study"
+            placeholder={t("study") as string}
             value={study}
-            disabled={type !== types[0]}
+            disabled={type !== 0}
             onIonChange={
               (ev) => {
                 //console.log(ev.detail.value)
@@ -382,9 +395,9 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
               id="course-input"
               name="course-input"
               ref={yearRef}
-              placeholder="Course"
+              placeholder={t("year") as string}
               value={course}
-              disabled={type !== types[0]}
+              disabled={type !== 0}
               onIonChange={
               (ev:CustomEvent<SelectChangeEventDetail>) => {
                 setCourse(ev.detail.value)
@@ -398,10 +411,10 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
             </IonSelect>
           </IonItem>
           <IonButton expand="block" type="submit" className="ion-margin-top" onClick={() => register()}>
-            Register
+            {t("register")}
           </IonButton>
           <IonButton routerLink="/home" expand="block" className="ion-margin-top" color="danger">
-            Back
+            {t("back")}
           </IonButton>
         </div>
       </IonContent>

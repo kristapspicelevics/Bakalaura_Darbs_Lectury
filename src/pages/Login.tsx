@@ -6,9 +6,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { RouteComponentProps } from 'react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const auth = getAuth();
+  const { t, i18n } = useTranslation();
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
   const [user, loading, error] = useAuthState(auth);
   if (user) {
@@ -123,12 +125,12 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Login</IonTitle>
+          <IonTitle>{t("login")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonItem>
-          <IonLabel position="floating">Email</IonLabel>
+          <IonLabel position="floating">{t("email")}</IonLabel>
           <IonInput 
             type="email" 
             ref={emailInputRef}
@@ -137,7 +139,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
             ></IonInput>
         </IonItem>
         <IonItem>
-          <IonLabel position="floating">Password</IonLabel>
+          <IonLabel position="floating">{t("password")}</IonLabel>
           <IonInput 
             type="password" 
             ref={passInputRef}
@@ -146,13 +148,13 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           />
         </IonItem>
         <IonButton onClick={() => login()} className="ion-margin-top" type="submit" expand="block">
-          Login
+          {t("login")}
         </IonButton>
         <IonButton onClick={() => setIsForgotPasswordModalOpen(true)} className="ion-margin-top" type="submit" expand="block" color="warning">
-          Forgot Password?
+          {t("forgot_password")}
         </IonButton>
         <IonButton routerLink="/home" expand="block" className="ion-margin-top" color="danger">
-          Back
+          {t("back")}
         </IonButton>
         <IonModal
           isOpen={
@@ -162,7 +164,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           >
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Forgot Password?</IonTitle>
+              <IonTitle>{t("forgot_password")}</IonTitle>
               <IonButtons slot="end">
                 <IonButton onClick={() => setIsForgotPasswordModalOpen(false)}><IonIcon icon="closeOutline"></IonIcon></IonButton>
               </IonButtons>
@@ -170,7 +172,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
           </IonHeader>
           <IonContent>
             <IonItem>
-            <IonLabel position="floating">Username</IonLabel>
+            <IonLabel position="floating">{t("email")}</IonLabel>
             <IonInput 
               type="email" 
               ref={emailResetInputRef}
@@ -179,7 +181,7 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
             ></IonInput>
             </IonItem>
             <IonButton onClick={() => passwordReset()} expand="block" type="submit" className="ion-margin-top">
-              Change password
+              {t("change_password")}
             </IonButton>
           </IonContent>
         </IonModal>

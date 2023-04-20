@@ -3,8 +3,10 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
+import { useTranslation } from 'react-i18next';
 
 const Home: React.FC = (history) => {
+  const { t, i18n } = useTranslation();
 
   return (
     
@@ -20,14 +22,14 @@ const Home: React.FC = (history) => {
             <IonRow class="ion-justify-content-center">
               <IonCol size="12">
                 <IonButton routerLink="/register" expand="block">
-                  Register
+                  {t("register")}
                 </IonButton>
               </IonCol>
             </IonRow>
             <IonRow class="ion-justify-content-center">
               <IonCol size="12">
                 <IonButton routerLink="/login" expand="block" color="danger">
-                  Login
+                {t("login")}
                 </IonButton>
               </IonCol>
             </IonRow>

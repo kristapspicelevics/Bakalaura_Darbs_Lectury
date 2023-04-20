@@ -8,13 +8,15 @@ import { getFirestore, query, collection, getDocs, addDoc } from 'firebase/fires
 import { User } from '../models/User';
 import { Course } from '../models/Course';
 import { add, arrowBack, calendar, closeOutline, exitOutline, timeOutline, timer, trash } from 'ionicons/icons';
-import { types } from './Register';
 import { Studies } from '../models/Studies';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic';
 import { format, parseISO } from 'date-fns';
 import { FirebaseAuthentication } from '@awesome-cordova-plugins/firebase-authentication';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
+  const { t } = useTranslation();
 
   interface DateTime {
     date: string;
@@ -151,7 +153,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
       console.log(jsonData);
       console.log(email);
       console.log(jsonData.email);
-      console.log(jsonData.type === types[0]);
+      console.log(jsonData.type === 0);
       if (email === jsonData.email.toString()){
         users.push({
           id: jsonData.id,
@@ -295,12 +297,12 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
       <IonPage id="main-content">
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Add Lecture</IonTitle>
+            <IonTitle>{t("add_lecture")}</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonItem>
-            <IonLabel position="floating">Lecture name</IonLabel>
+            <IonLabel position="floating">{t("lecture_name")}</IonLabel>
             <IonInput 
               type="text" 
               ref={nameInputRef}
@@ -316,7 +318,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
               id="study-input"
               name="study-input"
               ref={studyRef}
-              placeholder="Study"
+              placeholder={t("study") as string}
               disabled={name === ''}
               value={study}
               onIonChange={
@@ -359,7 +361,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
               id="course-input"
               name="course-input"
               ref={yearRef}
-              placeholder="Year"
+              placeholder={t("year") as string}
               disabled={study.length === 0}
               value={year}
               onIonChange={
@@ -374,10 +376,10 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
             </IonSelect>
           </IonItem>
           <IonItem button onClick={() => openModal()} className="ion-margin-top" type="submit">
-            <IonLabel>Pick date</IonLabel>
+            <IonLabel>{t("pick_dates")}</IonLabel>
           </IonItem>
           <IonItem button onClick={() => reset()} className="ion-margin-top" type="submit">
-            <IonLabel>Clear</IonLabel>
+            <IonLabel>{t("clear")}</IonLabel>
           </IonItem>
           
             <IonList>
@@ -451,7 +453,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
           >
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Pick Date</IonTitle>
+              <IonTitle>{t("pick_dates")}</IonTitle>
               <IonButtons slot="end">
                 <IonButton onClick={() => setIsDateTimeModalOpen(false)}><IonIcon icon={closeOutline}></IonIcon></IonButton>
               </IonButtons>
@@ -481,7 +483,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
             </IonItem>
             <IonItem>
               <IonCol size="6">
-                <IonLabel>Start time:</IonLabel>
+                <IonLabel>{t("start_time")}:</IonLabel>
                 <IonDatetime
                   className='ion-justify-content-center'
                   //multiple={true}
@@ -505,7 +507,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
               
               </IonCol>
               <IonCol size="6">
-                <IonLabel>End time:</IonLabel>
+                <IonLabel>{t("end_time")}:</IonLabel>
                 <IonDatetime
                   className='ion-justify-content-center'
                   //multiple={true}

@@ -28,6 +28,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { initializeApp } from 'firebase/app';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic";
+import { Localization } from './models/Localization';
 
 setupIonicReact();
 
@@ -40,6 +41,21 @@ export const firebaseApp = initializeApp({
   appId: "1:522777359209:web:a9c5dd5fdec9a05d0c03f8",
   measurementId: "G-45P7XJBWBX"
 });
+
+export const languages: Localization[] = [
+  {
+    locale: "en",
+    languageName: "English"
+  },
+  {
+    locale: "lv",
+    languageName: "Latviešu"
+  },
+  {
+    locale: "ru",
+    languageName: "Русский"
+  }
+]
 
 // FCM.createNotificationChannel({
 //   id: "lectury", // required

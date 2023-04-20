@@ -4,5 +4,5 @@ export interface User {
     year?: number;
     email: string;
     study?: string;
-    type: string;
+    type: number;
 }

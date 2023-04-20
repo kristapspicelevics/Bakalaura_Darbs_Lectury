@@ -8,7 +8,6 @@ import { getFirestore, query, collection, getDocs, addDoc } from 'firebase/fires
 import { User } from '../models/User';
 import { Course } from '../models/Course';
 import { add, arrowBack, closeOutline, exitOutline } from 'ionicons/icons';
-import { types } from './Register';
 import { Studies } from '../models/Studies';
 import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic';
 import { format, parseISO } from 'date-fns';
@@ -146,7 +145,7 @@ const EditLecture: React.FC<RouteComponentProps> = ({ history }) => {
       console.log(jsonData);
       console.log(email);
       console.log(jsonData.email);
-      console.log(jsonData.type === types[0]);
+      console.log(jsonData.type === 0);
       if (email === jsonData.email.toString()){
         users.push({
           id: jsonData.id,
