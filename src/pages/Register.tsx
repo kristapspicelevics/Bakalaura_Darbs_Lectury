@@ -1,4 +1,4 @@
-import { IonButton, IonCheckbox, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonNote, IonPage, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, SelectChangeEventDetail, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonCheckbox, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonNote, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, SelectChangeEventDetail, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import { FirebaseAuthentication } from '@awesome-cordova-plugins/firebase-authentication';
 import {  } from '@awesome-cordova-plugins/core';
@@ -12,6 +12,7 @@ import { Studies } from '../models/Studies';
 import { User } from '../models/User';
 import { firebaseApp } from '../App';
 import { initReactI18next, useTranslation  } from 'react-i18next';
+import LanguageChoooser from '../components/LanguageChooser';
 
 export let years = [1,2,3,4,5]
 
@@ -275,11 +276,17 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>{t("register")}</IonTitle>
+          <IonRow>
+            <IonCol size="4">
+              <IonTitle size="large">{t("register")}</IonTitle>
+            </IonCol>
+            <IonCol size="4"></IonCol>
+            <IonCol size="4"><LanguageChoooser></LanguageChoooser></IonCol>
+          </IonRow>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <div className="ion-padding">
+        <div className="container">
 
           <IonItem>
             <IonLabel position="floating">{t("fullname")}</IonLabel>

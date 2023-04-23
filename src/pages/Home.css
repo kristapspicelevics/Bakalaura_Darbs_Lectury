@@ -6,3 +6,7 @@ ion-footer {
     display: flex;
     justify-content:center;
 }
+
+.item-datetime ion-datetime {
+    position: initial !important;
+  }

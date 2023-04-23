@@ -1,5 +1,5 @@
 import { FirebaseAuthentication } from '@awesome-cordova-plugins/firebase-authentication';
-import { IonButton, IonButtons, IonCheckbox, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonButtons, IonCheckbox, IonCol, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonPage, IonRow, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from '@ionic/react';
 import { browserLocalPersistence, getAuth, indexedDBLocalPersistence, inMemoryPersistence, setPersistence } from 'firebase/auth';
 import { useRef, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
 import { useTranslation } from 'react-i18next';
+import LanguageChoooser from '../components/LanguageChooser';
 
 const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const auth = getAuth();
@@ -125,10 +126,17 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>{t("login")}</IonTitle>
+          <IonRow>
+            <IonCol size="4">
+              <IonTitle size="large">{t("login")}</IonTitle>
+            </IonCol>
+            <IonCol size="4"></IonCol>
+            <IonCol size="4"><LanguageChoooser></LanguageChoooser></IonCol>
+          </IonRow>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <div className="container">
         <IonItem>
           <IonLabel position="floating">{t("email")}</IonLabel>
           <IonInput 
@@ -171,20 +179,23 @@ const Login: React.FC<RouteComponentProps> = ({ history }) => {
             </IonToolbar>
           </IonHeader>
           <IonContent>
-            <IonItem>
-            <IonLabel position="floating">{t("email")}</IonLabel>
-            <IonInput 
-              type="email" 
-              ref={emailResetInputRef}
-              onIonInput={(ev) => setEmailResetInput(ev)} 
-              value={emailReset}
-            ></IonInput>
-            </IonItem>
-            <IonButton onClick={() => passwordReset()} expand="block" type="submit" className="ion-margin-top">
-              {t("change_password")}
-            </IonButton>
+            <div className="container">
+              <IonItem>
+                <IonLabel position="floating">{t("email")}</IonLabel>
+                <IonInput 
+                  type="email" 
+                  ref={emailResetInputRef}
+                  onIonInput={(ev) => setEmailResetInput(ev)} 
+                  value={emailReset}
+                ></IonInput>
+                </IonItem>
+              <IonButton onClick={() => passwordReset()} expand="block" type="submit" className="ion-margin-top">
+                {t("change_password")}
+              </IonButton>
+            </div>  
           </IonContent>
         </IonModal>
+        </div>
       </IonContent>
     </IonPage>
   );

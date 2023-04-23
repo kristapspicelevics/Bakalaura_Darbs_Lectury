@@ -696,27 +696,33 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                     </IonToolbar>
                   </IonHeader>
                   <IonContent fullscreen>
-                    <IonItem>
-                      <IonCol size="12">
-                      <IonDatetime
-                        className='ion-justify-content-center'
-                        multiple={true}
-                        ref={date}
-                        firstDayOfWeek={1}
-                        presentation="date"
-                        onIonChange={(ev:CustomEvent<DatetimeChangeEventDetail>) => {
-                          if (ev.detail.value !== undefined && ev.detail.value !== null){
-                            console.log(ev.detail.value)
-                            //setCourseDate(ev.detail.value.toString().split(","))
-                            setCourseDate(ev.detail.value as string[])
-                          }
-                          //setCourseDate(ev.detail.value)
-                        }}
-                        value={courseDate}
-                      >
-                      </IonDatetime>
+                    <IonRow>
+                      <IonCol size="1">
                       </IonCol>
-                    </IonItem>
+                      <IonCol size="10" className='ion-justify-content-center'>
+                        <IonDatetime
+                          className='ion-justify-content-center'
+                          multiple={true}
+                          ref={date}
+                          inputMode='none'
+                          firstDayOfWeek={1}
+                          presentation="date"
+                          onIonChange={(ev:CustomEvent<DatetimeChangeEventDetail>) => {
+                            if (ev.detail.value !== undefined && ev.detail.value !== null){
+                              console.log(ev.detail.value)
+                              //setCourseDate(ev.detail.value.toString().split(","))
+                              setCourseDate(ev.detail.value as string[])
+                            }
+                            //setCourseDate(ev.detail.value)
+                          }}
+                          value={courseDate}
+                        >
+                        </IonDatetime>
+
+                      </IonCol>
+                      <IonCol size="1">
+                      </IonCol>
+                    </IonRow>
                     <IonItem>
                       <IonCol size="6">
                         <IonLabel>{t("start_time")}:</IonLabel>
