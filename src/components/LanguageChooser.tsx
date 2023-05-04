@@ -41,7 +41,7 @@ const LanguageChoooser: React.FC<ContainerProps> = () => {
               (ev) => {
                 if (ev.detail.value !== null && ev.detail.value !== undefined){
                     let filtered = languages.filter(lang => lang.languageName === (ev.detail.value))
-                    changeLang(filtered[0].locale)
+                    changeLang(filtered[0]?.locale)
                     setLanguageName(ev.detail.value)
                 }
               }

@@ -300,7 +300,7 @@ const AddLecture: React.FC<RouteComponentProps> = ({ history }) => {
             <IonTitle>{t("add_lecture")}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent fullscreen>
         <div className="container">
           <IonItem>
             <IonLabel position="floating">{t("lecture_name")}</IonLabel>

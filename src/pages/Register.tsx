@@ -277,15 +277,14 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonRow>
-            <IonCol size="4">
+            <IonCol size="8">
               <IonTitle size="large">{t("register")}</IonTitle>
             </IonCol>
-            <IonCol size="4"></IonCol>
             <IonCol size="4"><LanguageChoooser></LanguageChoooser></IonCol>
           </IonRow>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent fullscreen>
         <div className="container">
 
           <IonItem>

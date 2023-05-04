@@ -487,10 +487,13 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
             <IonTitle>{t("lecture")}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent fullscreen>
           <IonList>
             {courses?.map((m: Course) => (
               <IonGrid>
+                                        
+              {(m.nearestDate !== undefined) &&
+                <>
                 <IonRow>
                   <IonCol size="10">
                     <IonItem
@@ -505,9 +508,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                           </IonCol>
                           
                         </IonRow>
-                        
-                          {(m.nearestDate !== undefined) &&
-                            <>
+
                             <IonRow>
                               <IonCol size="12">
                                 
@@ -517,10 +518,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                                 
                                 <IonLabel><IonIcon icon={timeOutline}></IonIcon> {m.nearestDate.split(";")[1]} - {m.nearestDate.split(";")[2]}<br/></IonLabel>
                               </IonCol>
-                            </IonRow>
-                           </>
-                          }
-                       
+                            </IonRow>                
                       </IonGrid>
                     </IonItem>
                   </IonCol>
@@ -532,7 +530,10 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                       <IonIcon icon={documentOutline}></IonIcon>
                     </IonButton>
                   </IonCol>
+                  
                 </IonRow>
+                </>
+                }
                 <IonModal
                   isOpen={
                     isEditLectureModalOpen
@@ -541,13 +542,14 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                 >
                 <IonHeader>
                   <IonToolbar>
-                    <IonTitle>{m.name}</IonTitle>
+                    <IonTitle>{currCourse?.name}</IonTitle>
                     <IonButtons slot="end">
                       <IonButton onClick={() => setIsEditLectureModalOpen(false)}><IonIcon icon={closeOutline}></IonIcon></IonButton>
                     </IonButtons>
                   </IonToolbar>
                 </IonHeader>
                 <IonContent>
+                  <div className="container">
                   <IonItem>
                     <IonLabel position="floating">{t("lecture_name")}</IonLabel>
                     <IonInput 
@@ -661,6 +663,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
                       ))}
                     </IonList> 
                   </IonItem> 
+                </div>
                 </IonContent>
                   <IonFooter>
                     <IonGrid>

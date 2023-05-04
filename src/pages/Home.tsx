@@ -15,10 +15,9 @@ const Home: React.FC = (history) => {
       <IonHeader>
         <IonToolbar>
           <IonRow>
-            <IonCol size="4">
+            <IonCol size="8">
               <IonTitle size="large">Lectury</IonTitle>
             </IonCol>
-            <IonCol size="4"></IonCol>
             <IonCol size="4"><LanguageChoooser></LanguageChoooser></IonCol>
           </IonRow>
         </IonToolbar>
@@ -26,20 +25,13 @@ const Home: React.FC = (history) => {
       <IonContent fullscreen>
         <div className="container">
           <IonGrid >
-            <IonRow class="ion-justify-content-center">
-              <IonCol size="12">
-                <IonButton routerLink="/register" expand="block">
-                  {t("register")}
-                </IonButton>
-              </IonCol>
-            </IonRow>
-            <IonRow class="ion-justify-content-center">
-              <IonCol size="12">
-                <IonButton routerLink="/login" expand="block" color="danger">
-                {t("login")} <span className="flag-icon flag-icon-gr flag-icon-squared"></span>
-                </IonButton>
-              </IonCol>
-            </IonRow>
+            <IonButton routerLink="/register" expand="block" className="ion-margin-top">
+              {t("register")}
+            </IonButton>
+
+            <IonButton routerLink="/login" expand="block" color="danger" className="ion-margin-top">
+              {t("login")}
+            </IonButton>
           </IonGrid>
         </div>
       </IonContent>
