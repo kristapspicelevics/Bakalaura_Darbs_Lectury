@@ -297,7 +297,7 @@ const VideoCall: React.FC<RouteComponentProps> = ({ history }) => {
         email: users[0].email, // user's email
         startWithAudioMuted: true, // start with audio muted, default: false
         startWithVideoMuted: true, // start with video muted, default: false
-        chatEnabled: false, // enable Chat feature, default: true
+        chatEnabled: true, // enable Chat feature, default: true
         inviteEnabled: false, // enable Invitation feature, default: true
         
         // advanced parameters (optional)
